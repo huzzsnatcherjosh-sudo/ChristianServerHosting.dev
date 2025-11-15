@@ -1,0 +1,2567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChristansServerHosting.dev - 100% Free Server Hosting</title>
+    <style>
+        /* ========================================
+           CSS VARIABLES - Theme System
+           ======================================== */
+        :root {
+            /* Primary Brand Colors */
+            --primary-color: #00d4ff;
+            --primary-dark: #0099cc;
+            --primary-light: #66e5ff;
+            --secondary-color: #9d4edd;
+            --secondary-dark: #7b2cbf;
+            --accent-color: #ff006e;
+            
+            /* Background Colors */
+            --bg-primary: #0a0e27;
+            --bg-secondary: #131830;
+            --bg-tertiary: #1a1f3a;
+            --bg-card: rgba(26, 31, 58, 0.6);
+            --bg-card-hover: rgba(26, 31, 58, 0.8);
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #b8c1ec;
+            --text-muted: #7c88b1;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: 20px;
+            
+            /* Glow Intensity */
+            --glow-strength: 0.6;
+            --glow-size: 20px;
+            
+            /* Spacing & Layout */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+            
+            /* Animation Timing */
+            --transition-fast: 0.2s;
+            --transition-normal: 0.4s;
+            --transition-slow: 0.8s;
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-primary: #f0f4f8;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        /* ========================================
+           RESET & BASE STYLES
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========================================
+           ANIMATED BACKGROUND SYSTEM
+           ======================================== */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-color), transparent);
+            top: -250px;
+            left: -250px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary-color), transparent);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--accent-color), transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(100px, -100px) scale(1.1);
+            }
+            66% {
+                transform: translate(-100px, 100px) scale(0.9);
+            }
+        }
+
+        /* Particle System */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: particle-rise linear infinite;
+        }
+
+        @keyframes particle-rise {
+            from {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            to {
+                transform: translateY(-100vh) translateX(var(--drift));
+                opacity: 0;
+            }
+        }
+
+        /* ========================================
+           NAVIGATION BAR
+           ======================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border);
+            transition: all var(--transition-normal) var(--ease-smooth);
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 2rem;
+            background: var(--bg-card);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: transform var(--transition-fast) var(--ease-smooth);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color var(--transition-fast);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width var(--transition-normal) var(--ease-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            transform: scale(1.05);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-normal) var(--ease-smooth);
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, calc(var(--glow-strength) * 0.4));
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, calc(var(--glow-strength) * 0.6));
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ========================================
+           MAIN CONTENT CONTAINER
+           ======================================== */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* ========================================
+           HERO SECTION
+           ======================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg) var(--spacing-md);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s var(--ease-smooth);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            animation: glow-pulse 3s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 212, 255, calc(var(--glow-strength) * 0.3));
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 212, 255, calc(var(--glow-strength) * 0.6));
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 5s infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all var(--transition-normal) var(--ease-smooth);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========================================
+           FEATURES SECTION
+           ======================================== */
+        .section {
+            position: relative;
+            padding: var(--spacing-xl) var(--spacing-md);
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all var(--transition-normal) var(--ease-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(157, 78, 221, 0.1));
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========================================
+           PRICING SECTION
+           ======================================== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all var(--transition-normal) var(--ease-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--primary-color);
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, calc(var(--glow-strength) * 0.3));
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .pricing-card:hover::before {
+            left: 100%;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pricing-plan {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price span {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            min-height: 50px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: #00ff00;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* ========================================
+           FAQ SECTION
+           ======================================== */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all var(--transition-normal) var(--ease-smooth);
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition-fast);
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: transform var(--transition-normal) var(--ease-smooth);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal) var(--ease-smooth);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 2rem 1.5rem 2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ========================================
+           CTA SECTION
+           ======================================== */
+        .cta-section {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========================================
+           CONTENT PAGES
+           ======================================== */
+        .content-page {
+            min-height: 100vh;
+            padding: calc(80px + var(--spacing-lg)) var(--spacing-md) var(--spacing-lg);
+        }
+
+        .content-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .content-card h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .content-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .content-card ul, .content-card ol {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .server-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .spec-item {
+            background: var(--glass-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .spec-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-item p {
+            margin-bottom: 0;
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        .footer {
+            position: relative;
+            z-index: 10;
+            padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .social-link:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+           SCROLL INDICATOR
+           ======================================== */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            z-index: 9999;
+            transform-origin: left;
+            transition: transform 0.1s;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-card);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                border-top: 1px solid var(--glass-border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .section {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .feature-card,
+            .pricing-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* ========================================
+           UTILITY CLASSES
+           ======================================== */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- Animated Background -->
+    <div class="background-container">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" onclick="showPage('home'); return false;" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#9d4edd;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="10" y="30" width="30" height="40" rx="5" fill="url(#logoGradient)"/>
+                    <rect x="45" y="20" width="30" height="50" rx="5" fill="url(#logoGradient)" opacity="0.8"/>
+                    <rect x="80" y="35" width="10" height="30" rx="3" fill="url(#logoGradient)" opacity="0.6"/>
+                    <circle cx="50" cy="15" r="8" fill="#00d4ff" opacity="0.6"/>
+                    <circle cx="35" cy="80" r="6" fill="#9d4edd" opacity="0.5"/>
+                    <circle cx="70" cy="75" r="5" fill="#ff006e" opacity="0.5"/>
+                </svg>
+                <span>ChristansHosting</span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+                <li><a href="#" onclick="showPage('features'); return false;">Features</a></li>
+                <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+                <li><a href="#" onclick="showPage('docs'); return false;">Documentation</a></li>
+                <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a href="#" onclick="showPage('home'); document.getElementById('pricing').scrollIntoView({behavior: 'smooth'}); return false;" class="btn btn-primary">Get Started Free</a>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page-content active">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="hero-badge">🎉 100% FREE FOREVER - No Hidden Costs</div>
+                <h1>Free Server Hosting For Everyone</h1>
+                <p>Experience blazing-fast performance with unlimited bandwidth, enterprise-grade security, and 99.9% uptime. Completely free, forever. No credit card required.</p>
+                
+                <div class="hero-actions">
+                    <a href="#pricing" class="btn btn-primary">Start Hosting Now</a>
+                    <a href="#" onclick="showPage('docs'); return false;" class="btn btn-secondary">View Documentation</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Free</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15k+</span>
+                        <span class="stat-label">Active Servers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Bandwidth</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" id="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Features</div>
+                    <h2 class="section-title">Everything You Need, Absolutely Free</h2>
+                    <p class="section-description">Premium features without the premium price tag. Get started in seconds.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="iconGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4ff" />
+                                        <stop offset="100%" style="stop-color:#9d4edd" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <path d="M 50 20 L 50 50 L 70 65" stroke="url(#iconGrad1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Instant Setup</h3>
+                        <p class="feature-description">Deploy your server in under 30 seconds with our one-click installation. No technical knowledge required - just click and play!</p>
+                    </div>
+
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="30" width="25" height="40" rx="3" fill="url(#iconGrad1)"/>
+                                <rect x="50" y="20" width="25" height="50" rx="3" fill="url(#iconGrad1)" opacity="0.7"/>
+                                <rect x="80" y="35" width="10" height="35" rx="2" fill="url(#iconGrad1)" opacity="0.5"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">DDoS Protection</h3>
+                        <p class="feature-description">Enterprise-grade DDoS mitigation keeps your servers protected against all attacks, absolutely free. Your uptime is our priority.</p>
+                    </div>
+
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M 50 10 L 90 40 L 90 80 L 50 100 L 10 80 L 10 40 Z" fill="none" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <circle cx="50" cy="50" r="15" fill="url(#iconGrad1)"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">High Performance</h3>
+                        <p class="feature-description">Latest AMD Ryzen & Intel Xeon processors with NVMe SSD storage ensure lightning-fast performance for all your servers.</p>
+                    </div>
+
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="30" cy="30" r="15" fill="url(#iconGrad1)" opacity="0.8"/>
+                                <circle cx="70" cy="30" r="15" fill="url(#iconGrad1)" opacity="0.6"/>
+                                <circle cx="50" cy="70" r="15" fill="url(#iconGrad1)"/>
+                                <line x1="35" y1="40" x2="45" y2="60" stroke="url(#iconGrad1)" stroke-width="3"/>
+                                <line x1="65" y1="40" x2="55" y2="60" stroke="url(#iconGrad1)" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Global Network</h3>
+                        <p class="feature-description">Multiple datacenter locations worldwide ensure low latency and optimal performance for all your players, wherever they are.</p>
+                    </div>
+
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="15" y="25" width="70" height="50" rx="5" fill="none" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <line x1="15" y1="40" x2="85" y2="40" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <circle cx="35" cy="55" r="8" fill="url(#iconGrad1)"/>
+                                <circle cx="65" cy="55" r="8" fill="url(#iconGrad1)"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Easy Management</h3>
+                        <p class="feature-description">Intuitive control panel with full FTP access, file manager, console access, and real-time monitoring. Manage everything in one place.</p>
+                    </div>
+
+                    <div class="feature-card tilt-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="35" r="20" fill="none" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <path d="M 35 50 Q 35 70 50 75 Q 65 70 65 50" fill="none" stroke="url(#iconGrad1)" stroke-width="4"/>
+                                <line x1="50" y1="75" x2="50" y2="90" stroke="url(#iconGrad1)" stroke-width="4"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">24/7 Support</h3>
+                        <p class="feature-description">Expert support team available around the clock via live chat, email, and Discord. We're here to help whenever you need us.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="section" id="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Pricing</div>
+                    <h2 class="section-title">Choose Your Free Plan</h2>
+                    <p class="section-description">All plans are 100% free forever. No credit card required, no hidden fees.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card tilt-card">
+                        <div class="pricing-badge">100% Free</div>
+                        <div class="pricing-plan">Basic</div>
+                        <div class="pricing-price">FREE<span>/forever</span></div>
+                        <p class="pricing-description">Perfect for small servers</p>
+                        <ul class="pricing-features">
+                            <li>2GB RAM</li>
+                            <li>20GB SSD Storage</li>
+                            <li>Unlimited Bandwidth</li>
+                            <li>1 Server Slot</li>
+                            <li>DDoS Protection</li>
+                            <li>Daily Backups</li>
+                            <li>24/7 Support</li>
+                        </ul>
+                        <a href="#" onclick="showPage('contact'); return false;" class="btn btn-primary">Get Started</a>
+                    </div>
+
+                    <div class="pricing-card featured tilt-card">
+                        <div class="pricing-badge">Most Popular - 100% Free</div>
+                        <div class="pricing-plan">Standard</div>
+                        <div class="pricing-price">FREE<span>/forever</span></div>
+                        <p class="pricing-description">Best for growing communities</p>
+                        <ul class="pricing-features">
+                            <li>4GB RAM</li>
+                            <li>50GB SSD Storage</li>
+                            <li>Unlimited Bandwidth</li>
+                            <li>3 Server Slots</li>
+                            <li>Priority DDoS Protection</li>
+                            <li>Hourly Backups</li>
+                            <li>24/7 Priority Support</li>
+                            <li>Free Subdomain</li>
+                            <li>Plugin Support</li>
+                        </ul>
+                        <a href="#" onclick="showPage('contact'); return false;" class="btn btn-primary">Get Started</a>
+                    </div>
+
+                    <div class="pricing-card tilt-card">
+                        <div class="pricing-badge">100% Free</div>
+                        <div class="pricing-plan">Advanced</div>
+                        <div class="pricing-price">FREE<span>/forever</span></div>
+                        <p class="pricing-description">For large communities</p>
+                        <ul class="pricing-features">
+                            <li>8GB RAM</li>
+                            <li>100GB SSD Storage</li>
+                            <li>Unlimited Bandwidth</li>
+                            <li>5 Server Slots</li>
+                            <li>Advanced DDoS Protection</li>
+                            <li>Real-time Backups</li>
+                            <li>Dedicated Support</li>
+                            <li>Custom Domain Support</li>
+                            <li>Full Plugin Access</li>
+                            <li>API Access</li>
+                        </ul>
+                        <a href="#" onclick="showPage('contact'); return false;" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section" id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">FAQ</div>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-description">Got questions? We've got answers.</p>
+                </div>
+
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is it really 100% free?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! ChristansHosting is completely free forever. No credit card required, no hidden fees, no trials that expire. We believe quality server hosting should be accessible to everyone.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How can you offer this for free?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We're supported by community donations and optional premium features. Our mission is to provide free hosting to everyone while maintaining the highest quality standards.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How quickly can I set up my server?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Your server will be automatically deployed within 30 seconds of completing registration. Our instant setup system handles all configuration, so you can start playing immediately.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What games do you support?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We support all major games including Minecraft (Java & Bedrock), Discord bots, web hosting, and custom applications. If you need something specific, contact our support team!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can I upgrade my plan later?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! You can upgrade to any plan at any time from your control panel. All plans are free, so upgrading simply gives you access to more resources instantly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What kind of DDoS protection do you provide?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                All servers include enterprise-grade DDoS protection with automatic mitigation. Our network can absorb large-scale attacks, ensuring your server stays online 24/7.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="container">
+                <div class="cta-section">
+                    <div class="cta-content">
+                        <h2 class="cta-title">Ready to Get Started?</h2>
+                        <p class="cta-description">Join thousands of users hosting their servers with us completely free. No credit card required!</p>
+                        <div class="hero-actions">
+                            <a href="#" onclick="showPage('contact'); return false;" class="btn btn-primary">Start Hosting Free</a>
+                            <a href="#" onclick="showPage('docs'); return false;" class="btn btn-secondary">View Documentation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FEATURES PAGE -->
+    <div id="page-features" class="page-content">
+        <div class="content-page">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Features</div>
+                    <h2 class="section-title">Complete Feature Overview</h2>
+                    <p class="section-description">Everything you get with ChristansHosting</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>🚀 Performance & Infrastructure</h2>
+                    <div class="server-specs">
+                        <div class="spec-item">
+                            <h4>CPU</h4>
+                            <p>AMD Ryzen 9 5950X / Intel Xeon E-2388G</p>
+                        </div>
+                        <div class="spec-item">
+                            <h4>Storage</h4>
+                            <p>NVMe SSD RAID 10</p>
+                        </div>
+                        <div class="spec-item">
+                            <h4>Network</h4>
+                            <p>10 Gbps uplinks</p>
+                        </div>
+                        <div class="spec-item">
+                            <h4>Uptime</h4>
+                            <p>99.9% SLA Guaranteed</p>
+                        </div>
+                    </div>
+
+                    <h3>Hardware Specifications</h3>
+                    <ul>
+                        <li>Latest generation AMD Ryzen 9 & Intel Xeon processors</li>
+                        <li>DDR4 ECC RAM for maximum stability</li>
+                        <li>Enterprise NVMe SSDs in RAID configuration</li>
+                        <li>Multiple redundant power supplies</li>
+                        <li>Climate-controlled datacenter facilities</li>
+                    </ul>
+
+                    <h3>Network Infrastructure</h3>
+                    <ul>
+                        <li>10 Gbps network connectivity per server</li>
+                        <li>Multiple Tier 1 network providers</li>
+                        <li>Global anycast network</li>
+                        <li>Automatic failover systems</li>
+                        <li>Real-time network monitoring</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>🛡️ Security Features</h2>
+                    <h3>DDoS Protection</h3>
+                    <p>Our advanced DDoS protection system automatically detects and mitigates attacks in real-time:</p>
+                    <ul>
+                        <li>Layer 3, 4, and 7 protection</li>
+                        <li>Automatic attack mitigation</li>
+                        <li>Real-time traffic analysis</li>
+                        <li>Zero-day attack protection</li>
+                        <li>No additional configuration required</li>
+                    </ul>
+
+                    <h3>Data Security</h3>
+                    <ul>
+                        <li>Automated daily backups</li>
+                        <li>One-click backup restoration</li>
+                        <li>Encrypted data transmission</li>
+                        <li>Secure FTP/SFTP access</li>
+                        <li>Two-factor authentication</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>⚙️ Control Panel Features</h2>
+                    <ul>
+                        <li>Intuitive web-based control panel</li>
+                        <li>Real-time server statistics</li>
+                        <li>Console access with command history</li>
+                        <li>Full file manager with editor</li>
+                        <li>FTP/SFTP account management</li>
+                        <li>Scheduled tasks and cron jobs</li>
+                        <li>Plugin/mod installer</li>
+                        <li>Database management</li>
+                        <li>Subdomain management</li>
+                        <li>Port forwarding configuration</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>🌍 Global Locations</h2>
+                    <p>Choose from multiple datacenter locations worldwide:</p>
+                    <ul>
+                        <li><strong>North America:</strong> New York, Los Angeles, Chicago, Toronto</li>
+                        <li><strong>Europe:</strong> London, Frankfurt, Paris, Amsterdam</li>
+                        <li><strong>Asia:</strong> Singapore, Tokyo, Mumbai</li>
+                        <li><strong>Oceania:</strong> Sydney, Melbourne</li>
+                        <li><strong>South America:</strong> São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="page-about" class="page-content">
+        <div class="content-page">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">About Us</div>
+                    <h2 class="section-title">Our Mission & Story</h2>
+                    <p class="section-description">Building the future of free server hosting</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Who We Are</h2>
+                    <p>ChristansServerHosting was founded with a simple mission: make quality server hosting accessible to everyone, regardless of budget. We believe that financial barriers shouldn't prevent anyone from hosting their gaming community, Discord bot, or web application.</p>
+                    
+                    <p>What started as a small project to help friends host Minecraft servers has grown into a thriving platform serving thousands of users worldwide. Our commitment to providing free, high-quality hosting remains at the core of everything we do.</p>
+
+                    <h3>Our Values</h3>
+                    <ul>
+                        <li><strong>Accessibility:</strong> Quality hosting should be available to everyone</li>
+                        <li><strong>Transparency:</strong> No hidden fees, no surprises</li>
+                        <li><strong>Community:</strong> Building together with our users</li>
+                        <li><strong>Innovation:</strong> Constantly improving our platform</li>
+                        <li><strong>Support:</strong> Always here when you need us</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>Why Free?</h2>
+                    <p>We understand the question: "How can you offer this for free?" Here's the honest answer:</p>
+                    
+                    <p>Our platform is sustained through:</p>
+                    <ul>
+                        <li>Community donations from users who want to support our mission</li>
+                        <li>Optional premium features for users who need advanced capabilities</li>
+                        <li>Efficient resource management and automation</li>
+                        <li>Strategic partnerships with infrastructure providers</li>
+                    </ul>
+
+                    <p>Most importantly, we're committed to keeping core hosting features free forever. That's not a promise we take lightly—it's the foundation of our platform.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Our Community</h2>
+                    <p>Over 15,000 active servers across the globe</p>
+                    <p>Join our thriving Discord community with thousands of members sharing tips, plugins, and helping each other succeed. Whether you're a complete beginner or an experienced server administrator, you'll find a welcoming community ready to help.</p>
+
+                    <h3>Community Highlights</h3>
+                    <ul>
+                        <li>24/7 community support from fellow users</li>
+                        <li>Regular events and competitions</li>
+                        <li>Plugin and mod sharing</li>
+                        <li>Server showcase opportunities</li>
+                        <li>Direct feedback channel to our development team</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>The Technology</h2>
+                    <p>Behind the scenes, we leverage cutting-edge technology to provide reliable, fast hosting:</p>
+                    <ul>
+                        <li>Containerized architecture for optimal resource isolation</li>
+                        <li>Automated scaling and load balancing</li>
+                        <li>Real-time monitoring and alerting systems</li>
+                        <li>Custom control panel built from the ground up</li>
+                        <li>Machine learning for resource optimization</li>
+                        <li>Open-source contributions to the community</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENTATION PAGE -->
+    <div id="page-docs" class="page-content">
+        <div class="content-page">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Documentation</div>
+                    <h2 class="section-title">Getting Started Guide</h2>
+                    <p class="section-description">Everything you need to know to start hosting</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Quick Start Guide</h2>
+                    <h3>Step 1: Create Your Account</h3>
+                    <ol>
+                        <li>Click "Get Started Free" on the homepage</li>
+                        <li>Enter your email address and choose a password</li>
+                        <li>Verify your email (check spam folder if needed)</li>
+                        <li>Log in to your dashboard</li>
+                    </ol>
+
+                    <h3>Step 2: Create Your First Server</h3>
+                    <ol>
+                        <li>Click "Create New Server" in your dashboard</li>
+                        <li>Select your server type (Minecraft, Discord Bot, Web, etc.)</li>
+                        <li>Choose your server location</li>
+                        <li>Pick your plan (all plans are free!)</li>
+                        <li>Click "Deploy Server"</li>
+                    </ol>
+
+                    <p><strong>Your server will be ready in under 30 seconds!</strong></p>
+
+                    <h3>Step 3: Configure Your Server</h3>
+                    <ol>
+                        <li>Access your server control panel</li>
+                        <li>Customize settings through the easy-to-use interface</li>
+                        <li>Upload plugins, mods, or custom files</li>
+                        <li>Start your server and share the IP with friends</li>
+                    </ol>
+                </div>
+
+                <div class="content-card">
+                    <h2>Server Types</h2>
+                    
+                    <h3>Minecraft Java Edition</h3>
+                    <p>Host Minecraft Java servers with full plugin support:</p>
+                    <ul>
+                        <li>All versions from 1.8 to latest supported</li>
+                        <li>Spigot, Paper, Purpur, Fabric, Forge</li>
+                        <li>One-click plugin installer</li>
+                        <li>World upload and download</li>
+                        <li>Automatic mod compatibility checking</li>
+                    </ul>
+
+                    <h3>Minecraft Bedrock Edition</h3>
+                    <ul>
+                        <li>Cross-platform play (PC, Mobile, Console)</li>
+                        <li>PocketMine-MP and Nukkit support</li>
+                        <li>Plugin management</li>
+                        <li>World backups and restoration</li>
+                    </ul>
+
+                    <h3>Discord Bots</h3>
+                    <ul>
+                        <li>Node.js, Python, Java runtime support</li>
+                        <li>24/7 uptime for your bots</li>
+                        <li>Easy deployment from GitHub</li>
+                        <li>Environment variable management</li>
+                        <li>Real-time logs and monitoring</li>
+                    </ul>
+
+                    <h3>Web Hosting</h3>
+                    <ul>
+                        <li>Static and dynamic websites</li>
+                        <li>PHP, Node.js, Python support</li>
+                        <li>MySQL/PostgreSQL databases</li>
+                        <li>Free SSL certificates</li>
+                        <li>Custom domain support</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>Control Panel Guide</h2>
+                    
+                    <h3>Dashboard Overview</h3>
+                    <p>Your control panel provides everything you need to manage your server:</p>
+                    <ul>
+                        <li><strong>Console:</strong> Execute commands and view real-time logs</li>
+                        <li><strong>File Manager:</strong> Upload, edit, and organize files</li>
+                        <li><strong>Statistics:</strong> Monitor CPU, RAM, disk, and network usage</li>
+                        <li><strong>Backups:</strong> Create and restore backups with one click</li>
+                        <li><strong>Settings:</strong> Configure server parameters</li>
+                        <li><strong>Plugins/Mods:</strong> Browse and install from our library</li>
+                    </ul>
+
+                    <h3>File Manager</h3>
+                    <p>The built-in file manager lets you:</p>
+                    <ul>
+                        <li>Upload files via drag-and-drop</li>
+                        <li>Edit files with syntax highlighting</li>
+                        <li>Create folders and organize structure</li>
+                        <li>Download files and folders as ZIP</li>
+                        <li>Set file permissions</li>
+                        <li>Search for specific files</li>
+                    </ul>
+
+                    <h3>FTP/SFTP Access</h3>
+                    <p>For advanced users, we provide FTP and SFTP access:</p>
+                    <ol>
+                        <li>Navigate to "FTP Access" in your control panel</li>
+                        <li>Generate FTP credentials</li>
+                        <li>Use FileZilla, WinSCP, or any FTP client</li>
+                        <li>Connect using the provided credentials</li>
+                    </ol>
+                </div>
+
+                <div class="content-card">
+                    <h2>Common Tasks</h2>
+
+                    <h3>Installing Plugins (Minecraft)</h3>
+                    <ol>
+                        <li>Stop your server</li>
+                        <li>Go to "Plugins" tab in control panel</li>
+                        <li>Search for your desired plugin</li>
+                        <li>Click "Install" and wait for completion</li>
+                        <li>Start your server</li>
+                    </ol>
+
+                    <h3>Creating Backups</h3>
+                    <ol>
+                        <li>Navigate to "Backups" tab</li>
+                        <li>Click "Create Backup"</li>
+                        <li>Wait for backup to complete (usually under 1 minute)</li>
+                        <li>Download backup or restore it later</li>
+                    </ol>
+
+                    <h3>Changing Server Version</h3>
+                    <ol>
+                        <li>Stop your server</li>
+                        <li>Go to "Settings" → "Server Version"</li>
+                        <li>Select your desired version</li>
+                        <li>Click "Update" and wait for installation</li>
+                        <li>Start your server</li>
+                    </ol>
+
+                    <h3>Connecting a Custom Domain</h3>
+                    <ol>
+                        <li>Purchase a domain from any registrar</li>
+                        <li>Add an A record pointing to your server IP</li>
+                        <li>In control panel, go to "Domains"</li>
+                        <li>Add your custom domain</li>
+                        <li>SSL certificate will be auto-generated</li>
+                    </ol>
+                </div>
+
+                <div class="content-card">
+                    <h2>Troubleshooting</h2>
+
+                    <h3>Server Won't Start</h3>
+                    <ul>
+                        <li>Check console logs for error messages</li>
+                        <li>Ensure you have enough RAM allocated</li>
+                        <li>Verify all plugins are compatible with your version</li>
+                        <li>Try removing recently added plugins</li>
+                        <li>Contact support if issue persists</li>
+                    </ul>
+
+                    <h3>Connection Issues</h3>
+                    <ul>
+                        <li>Verify server is running (green status)</li>
+                        <li>Check you're using the correct IP and port</li>
+                        <li>Ensure firewall isn't blocking connection</li>
+                        <li>Try restarting your server</li>
+                        <li>Check our status page for any outages</li>
+                    </ul>
+
+                    <h3>Performance Issues</h3>
+                    <ul>
+                        <li>Monitor resource usage in dashboard</li>
+                        <li>Reduce view distance if using Minecraft</li>
+                        <li>Remove unnecessary plugins</li>
+                        <li>Optimize your world (remove excess entities)</li>
+                        <li>Consider upgrading to a higher plan</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>API Documentation</h2>
+                    <p>For developers, we offer a comprehensive REST API:</p>
+                    
+                    <h3>Getting Started with API</h3>
+                    <ol>
+                        <li>Generate an API key in your account settings</li>
+                        <li>Include the key in request headers: <code>Authorization: Bearer YOUR_API_KEY</code></li>
+                        <li>Base URL: <code>https://api.christanshosting.dev/v1/</code></li>
+                    </ol>
+
+                    <h3>Common Endpoints</h3>
+                    <ul>
+                        <li><code>GET /servers</code> - List all your servers</li>
+                        <li><code>POST /servers</code> - Create a new server</li>
+                        <li><code>GET /servers/{id}</code> - Get server details</li>
+                        <li><code>POST /servers/{id}/start</code> - Start server</li>
+                        <li><code>POST /servers/{id}/stop</code> - Stop server</li>
+                        <li><code>POST /servers/{id}/restart</code> - Restart server</li>
+                        <li><code>GET /servers/{id}/stats</code> - Get server statistics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="page-contact" class="page-content">
+        <div class="content-page">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">Contact Us</div>
+                    <h2 class="section-title">Get In Touch</h2>
+                    <p class="section-description">We're here to help 24/7</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Support Channels</h2>
+                    
+                    <h3>🎮 Discord Community</h3>
+                    <p>Join our Discord server for instant community support and announcements:</p>
+                    <p><strong>discord.gg/christanshosting</strong></p>
+                    <ul>
+                        <li>Live chat with staff and community</li>
+                        <li>Quick response times</li>
+                        <li>Community events and giveaways</li>
+                        <li>Plugin/mod recommendations</li>
+                    </ul>
+
+                    <h3>📧 Email Support</h3>
+                    <p><strong>support@christanshosting.dev</strong></p>
+                    <ul>
+                        <li>Technical issues and bug reports</li>
+                        <li>Account management</li>
+                        <li>Billing questions (donations)</li>
+                        <li>Partnership inquiries</li>
+                    </ul>
+                    <p><em>Average response time: 2-4 hours</em></p>
+
+                    <h3>💬 Live Chat</h3>
+                    <p>Click the chat icon in the bottom-right corner of any page for instant support.</p>
+                    <ul>
+                        <li>Available 24/7</li>
+                        <li>Real-time assistance</li>
+                        <li>Screen sharing for technical issues</li>
+                    </ul>
+
+                    <h3>📚 Knowledge Base</h3>
+                    <p>Search our comprehensive knowledge base for guides and tutorials:</p>
+                    <p><strong>help.christanshosting.dev</strong></p>
+                    <ul>
+                        <li>Step-by-step tutorials</li>
+                        <li>Video guides</li>
+                        <li>Frequently asked questions</li>
+                        <li>Community-contributed guides</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>Report a Problem</h2>
+                    <p>Experiencing issues? Here's how to report them effectively:</p>
+                    
+                    <h3>Include This Information:</h3>
+                    <ol>
+                        <li><strong>Server ID:</strong> Found in your control panel</li>
+                        <li><strong>Description:</strong> Detailed explanation of the issue</li>
+                        <li><strong>Steps to Reproduce:</strong> How we can recreate the problem</li>
+                        <li><strong>Error Messages:</strong> Any error logs or messages</li>
+                        <li><strong>Screenshots:</strong> Visual proof of the issue</li>
+                    </ol>
+
+                    <h3>Priority Levels</h3>
+                    <ul>
+                        <li><strong>Critical:</strong> Server completely down - Response within 15 minutes</li>
+                        <li><strong>High:</strong> Major functionality broken - Response within 1 hour</li>
+                        <li><strong>Medium:</strong> Feature not working as expected - Response within 4 hours</li>
+                        <li><strong>Low:</strong> Minor issues or questions - Response within 24 hours</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>Business Inquiries</h2>
+                    
+                    <h3>Partnerships</h3>
+                    <p>Interested in partnering with us? We'd love to hear from you!</p>
+                    <p><strong>partnerships@christanshosting.dev</strong></p>
+
+                    <h3>Affiliate Program</h3>
+                    <p>Earn rewards by referring users to ChristansHosting:</p>
+                    <p><strong>affiliates@christanshosting.dev</strong></p>
+
+                    <h3>Media & Press</h3>
+                    <p>For press inquiries and media kits:</p>
+                    <p><strong>press@christanshosting.dev</strong></p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Office Hours</h2>
+                    <p>While our automated systems run 24/7, our human support team is available:</p>
+                    <ul>
+                        <li><strong>Discord Live Support:</strong> 24/7</li>
+                        <li><strong>Email Support:</strong> Monitored 24/7, responses within 4 hours</li>
+                        <li><strong>Live Chat:</strong> 24/7 with AI assistance, human takeover available</li>
+                        <li><strong>Phone Support:</strong> Coming soon for premium supporters</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2>Follow Us</h2>
+                    <p>Stay updated with the latest news and features:</p>
+                    <ul>
+                        <li><strong>Twitter:</strong> @ChristansHost</li>
+                        <li><strong>YouTube:</strong> ChristansHosting Tutorials</li>
+                        <li><strong>GitHub:</strong> github.com/christanshosting</li>
+                        <li><strong>Reddit:</strong> r/ChristansHosting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ChristansHosting</h3>
+                    <p>100% free server hosting for everyone. No credit card required, no hidden fees. Join thousands of users hosting their servers with us!</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Discord">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPage('home'); document.getElementById('pricing').scrollIntoView({behavior: 'smooth'}); return false;">Minecraft Hosting</a></li>
+                        <li><a href="#" onclick="showPage('home'); document.getElementById('pricing').scrollIntoView({behavior: 'smooth'}); return false;">Discord Bot Hosting</a></li>
+                        <li><a href="#" onclick="showPage('home'); document.getElementById('pricing').scrollIntoView({behavior: 'smooth'}); return false;">Web Hosting</a></li>
+                        <li><a href="#" onclick="showPage('features'); return false;">All Features</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPage('about'); return false;">About Us</a></li>
+                        <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+                        <li><a href="#" onclick="showPage('docs'); return false;">Documentation</a></li>
+                        <li><a href="#">Status Page</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPage('docs'); return false;">Help Center</a></li>
+                        <li><a href="#" onclick="showPage('contact'); return false;">Contact Support</a></li>
+                        <li><a href="#" onclick="showPage('home'); document.getElementById('faq').scrollIntoView({behavior: 'smooth'}); return false;">FAQ</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 ChristansServerHosting.dev. All rights reserved. 100% Free Forever | Designed with ❤️ for the community</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ========================================
+           JAVASCRIPT - Core Functionality & Animations
+           ======================================== */
+
+        // ===== Page Navigation System =====
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(`page-${pageName}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Close mobile menu if open
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            navLinks.classList.remove('active');
+            mobileMenuToggle.textContent = '☰';
+        }
+
+        // ===== Scroll Progress Indicator =====
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollIndicator.style.transform = `scaleX(${scrolled / 100})`;
+        });
+
+        // ===== Navbar Scroll Effect =====
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== Mobile Menu Toggle =====
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuToggle.textContent.trim();
+            mobileMenuToggle.textContent = icon === '☰' ? '✕' : '☰';
+        });
+
+        // ===== Theme Toggle =====
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== FAQ Accordion =====
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                if (isActive) {
+                    item.classList.remove('active');
+                } else {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // ===== Particle System =====
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 50;
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '0';
+            
+            const duration = 10 + Math.random() * 10;
+            particle.style.animationDuration = duration + 's';
+            
+            const drift = (Math.random() - 0.5) * 100;
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            const size = 1 + Math.random() * 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particlesContainer.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+                createParticle();
+            }, duration * 1000);
+        }
+
+        // Initialize particles
+        for (let i = 0; i < particleCount; i++) {
+            setTimeout(() => createParticle(), i * 100);
+        }
+
+        // ===== Smooth Scrolling for Anchor Links =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href.startsWith('#page-')) return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                
+                if (target) {
+                    const offsetTop = target.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ===== 3D Tilt Effect on Cards =====
+        const tiltCards = document.querySelectorAll('.tilt-card');
+
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.setProperty('--tilt-x', rotateX + 'deg');
+                card.style.setProperty('--tilt-y', rotateY + 'deg');
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.setProperty('--tilt-x', '0deg');
+                card.style.setProperty('--tilt-y', '0deg');
+            });
+        });
+
+        // ===== Parallax Effect on Scroll =====
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const parallaxElements = document.querySelectorAll('.gradient-orb');
+            
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.2);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // ===== Intersection Observer for Fade-in Animations =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards, pricing cards, and FAQ items
+        document.querySelectorAll('.feature-card, .pricing-card, .faq-item, .stat-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
+        });
+
+        // ===== Button Ripple Effect =====
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===== Cursor Glow Effect =====
+        let cursorGlow = null;
+
+        document.addEventListener('mousemove', (e) => {
+            if (!cursorGlow) {
+                cursorGlow = document.createElement('div');
+                cursorGlow.style.position = 'fixed';
+                cursorGlow.style.width = '300px';
+                cursorGlow.style.height = '300px';
+                cursorGlow.style.borderRadius = '50%';
+                cursorGlow.style.background = 'radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent 70%)';
+                cursorGlow.style.pointerEvents = 'none';
+                cursorGlow.style.transform = 'translate(-50%, -50%)';
+                cursorGlow.style.transition = 'opacity 0.3s';
+                cursorGlow.style.zIndex = '9998';
+                cursorGlow.style.opacity = '0';
+                document.body.appendChild(cursorGlow);
+            }
+            
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+            cursorGlow.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            if (cursorGlow) {
+                cursorGlow.style.opacity = '0';
+            }
+        });
+
+        // ===== Background Orb Mouse Tracking =====
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.gradient-orb');
+            const mouseXPercent = e.clientX / window.innerWidth;
+            const mouseYPercent = e.clientY / window.innerHeight;
+            
+            orbs.forEach((orb, index) => {
+                const speed = 0.02 + (index * 0.01);
+                const xOffset = (mouseXPercent - 0.5) * 100 * speed;
+                const yOffset = (mouseYPercent - 0.5) * 100 * speed;
+                
+                orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+
+        // ===== Pricing Card Special Effects =====
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        
+        pricingCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                pricingCards.forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.style.opacity = '0.6';
+                        otherCard.style.transform = 'scale(0.95)';
+                    }
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                pricingCards.forEach(otherCard => {
+                    otherCard.style.opacity = '1';
+                    otherCard.style.transform = '';
+                });
+            });
+        });
+
+        // ===== Feature Card Hover Sound Effect =====
+        const featureIcons = document.querySelectorAll('.feature-icon');
+        
+        featureIcons.forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2) rotate(5deg)';
+                this.style.filter = 'drop-shadow(0 0 20px var(--primary-color))';
+            });
+            
+            icon.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0deg)';
+                this.style.filter = 'drop-shadow(0 0 10px var(--primary-color))';
+            });
+        });
+
+        // ===== Scroll To Top Button =====
+        const scrollTopBtn = document.createElement('button');
+        scrollTopBtn.innerHTML = '↑';
+        scrollTopBtn.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        `;
+        
+        document.body.appendChild(scrollTopBtn);
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.style.opacity = '1';
+                scrollTopBtn.style.visibility = 'visible';
+            } else {
+                scrollTopBtn.style.opacity = '0';
+                scrollTopBtn.style.visibility = 'hidden';
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        scrollTopBtn.addEventListener('mouseenter', () => {
+            scrollTopBtn.style.transform = 'scale(1.1) translateY(-3px)';
+        });
+        
+        scrollTopBtn.addEventListener('mouseleave', () => {
+            scrollTopBtn.style.transform = 'scale(1) translateY(0)';
+        });
+
+        // ===== Interactive Background Gradient Based on Scroll =====
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const hue = Math.floor(180 + scrollPercent * 60);
+            
+            document.querySelectorAll('.gradient-orb').forEach((orb, index) => {
+                orb.style.filter = `blur(80px) hue-rotate(${hue + (index * 20)}deg)`;
+            });
+        });
+
+        // ===== Window Resize Handler =====
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                console.log('Window resized:', window.innerWidth, 'x', window.innerHeight);
+            }, 250);
+        });
+
+        // ===== Viewport Height Fix for Mobile =====
+        const setVH = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        };
+        
+        setVH();
+        window.addEventListener('resize', setVH);
+
+        // ===== Detect User's Preferred Motion Settings =====
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        
+        if (prefersReducedMotion.matches) {
+            document.body.style.setProperty('--transition-fast', '0s');
+            document.body.style.setProperty('--transition-normal', '0s');
+            document.body.style.setProperty('--transition-slow', '0s');
+            console.log('⚠️ Reduced motion mode enabled');
+        }
+
+        // ===== Initialize Toast Notification System =====
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(var(--glass-blur));
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                padding: 15px 25px;
+                color: var(--text-primary);
+                font-weight: 500;
+                z-index: 10000;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.3s;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            `;
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ===== Welcome Toast =====
+        setTimeout(() => {
+            showToast('🎉 Welcome to ChristansHosting - 100% Free Forever!');
+        }, 1500);
+
+        // ===== Dynamic Year in Footer =====
+        const currentYear = new Date().getFullYear();
+        const footerText = document.querySelector('.footer-bottom p');
+        if (footerText) {
+            footerText.innerHTML = footerText.innerHTML.replace('2024', currentYear);
+        }
+
+        // ===== Console Message =====
+        console.log('%cChristansServerHosting.dev', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
+        console.log('%c🎉 100% FREE FOREVER - No Credit Card Required', 'font-size: 14px; color: #00ff00;');
+        console.log('%cLooking for a job? We\'re hiring! Check our careers page.', 'font-size: 12px; color: #b8c1ec;');
+
+        // ===== Accessibility Enhancements =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav');
+        });
+
+        const a11yStyle = document.createElement('style');
+        a11yStyle.textContent = `
+            .keyboard-nav *:focus {
+                outline: 2px solid var(--primary-color);
+                outline-offset: 2px;
+            }
+        `;
+        document.head.appendChild(a11yStyle);
+
+        // ===== Performance Monitoring =====
+        let fps = 60;
+        let lastTime = performance.now();
+        let frames = 0;
+
+        function monitorFPS() {
+            frames++;
+            const currentTime = performance.now();
+            
+            if (currentTime >= lastTime + 1000) {
+                fps = Math.round((frames * 1000) / (currentTime - lastTime));
+                frames = 0;
+                lastTime = currentTime;
+                
+                if (fps < 30) {
+                    document.body.classList.add('low-performance');
+                } else {
+                    document.body.classList.remove('low-performance');
+                }
+            }
+            
+            requestAnimationFrame(monitorFPS);
+        }
+
+        monitorFPS();
+
+        const perfStyle = document.createElement('style');
+        perfStyle.textContent = `
+            .low-performance .gradient-orb {
+                animation: none !important;
+            }
+            .low-performance .particle {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(perfStyle);
+
+        // ===== Final Initialization Log =====
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00d4ff');
+        console.log('%c✨ ChristansServerHosting.dev', 'font-size: 20px; font-weight: bold; color: #00d4ff;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00d4ff');
+        console.log('%c🎨 Theme:', html.getAttribute('data-theme'), 'color: #9d4edd');
+        console.log('%c⚡ Performance:', `${fps} FPS`, 'color: #9d4edd');
+        console.log('%c🌐 Network:', navigator.onLine ? 'Online' : 'Offline', 'color: #9d4edd');
+        console.log('%c📱 Viewport:', `${window.innerWidth}x${window.innerHeight}`, 'color: #9d4edd');
+        console.log('%c✅ All systems initialized', 'color: #00ff00; font-weight: bold;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00d4ff');
+
+        // ===== End of JavaScript =====
+    </script>
+</body>
+</html>
